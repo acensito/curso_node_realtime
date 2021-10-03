@@ -1,0 +1,25 @@
+{
+  "name": "node-realtime-server",
+  "version": "0.0.1",
+  "description": "Real-time node server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acensito/curso_node_realtime.git"
+  },
+  "author": "F2T",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/acensito/curso_node_realtime/issues"
+  },
+  "homepage": "https://github.com/acensito/curso_node_realtime#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "socket.io": "^4.2.0",
+    "uuid": "^8.3.2"
+  }
+}
