@@ -35,13 +35,19 @@ const io = require('socket.io')(server, {
 
 //configuramos el socket
 io.on("connection", (socket) => {
+    //obtenemos fecha y hora
+    var hoy = new Date();
+    var fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
+    var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+    var fechaYHora = fecha + ' ' + hora;
+
     //obtenemos la ip
     const ip = socket.handshake.headers['x-forwarded-for'] || socket.conn.remoteAddress.split(":")[3];
     //mostramos por consola el cliente conectado
-    console.log('->client ' + ip + ' connected');
+    console.log(fechaYHora + ' ->client ' + ip + ' connected');
     //mostramos por consola el cliente que desconecta
     socket.on('disconnect', ()=>{
-        console.log('<-client ' + ip + ' disconnected');
+        console.log(fechaYHora + ' <-client ' + ip + ' disconnected');
     });
 });
 
