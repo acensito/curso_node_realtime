@@ -24,7 +24,10 @@ const server = app.listen(`${port}`, ()=>{
     //mensaje conocimiento
     console.log(`Server started on port ${port}`);
     //conexion a mysql
-    connection.connect();
+    connection.connect(function(error) {
+        console.log('ERROR: No ha podido conectarse a la base de datos'); // 'ECONNREFUSED'
+        server.close();
+    });
 });
 
 //se importa e inicializa el socket
