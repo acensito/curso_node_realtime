@@ -2,17 +2,16 @@
 //configuracion del servidor cargamos los modulos necesarios y los configuramos
 //importamos el modulo express
 const express = require('express');
-//import express from 'express';
 
 const app = express()
 const port = process.env.port || 3030;
 
 //importamos uuid
-//import { v4 as uuidv4 } from 'uuid';
+const { v4 : uuidv4 } = require('uuid');
 
 //importamos y configuramos mysql
 const mysql = require('mysql');
-//import { createConnection } from 'mysql';
+
 let connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -45,11 +44,30 @@ io.on("connection", (socket) => {
     const ip = socket.handshake.headers['x-forwarded-for'] || socket.conn.remoteAddress.split(":")[3];
     //mostramos por consola el cliente conectado
     console.log(fechaYHora + ' ->client ' + ip + ' connected');
+
     //mostramos por consola el cliente que desconecta
     socket.on('disconnect', ()=>{
         console.log(fechaYHora + ' <-client ' + ip + ' disconnected');
     });
+
+    socket.on('order', (data)=>{
+        //console.log(data);
+        let order = {
+            order_code: uuidv4(),
+            item_id: data.item_id,
+            created_at: mysql.raw('CURRENT_TIMESTAMP()'),
+            updated_at: mysql.raw('CURRENT_TIMESTAMP()')
+        }
+
+        connection.query('INSERT INTO orders SET ?', order, (error, results)=>{
+            if (error) throw error;
+            console.log(results);
+
+            io.emit('order_processed', order);
+        })
+    })
 });
+
 
 
 
